@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="http://d3js.org/d3.v3.min.js" language="JavaScript"></script>
+    <script src="rectangularAreaChart.js" language="JavaScript"></script>
+    <style>
+        .rectangularAreaChartText { font-family: Helvetica; font-size: 12px; }
+    </style>
+</head>
+<body>
+<div align="center">
+    <div align="left" style="width: 810px;">
+        <svg id="rectangularareachart1" width="900" height="900"></svg>
+        <svg id="rectangularareachart2" width="400" height="240"></svg>
+    </div>
+    <div align="left" style="width: 810px;">
+        <svg id="rectangularareachart3" width="400" height="240"></svg>
+        <svg id="rectangularareachart4" width="250" height="240"></svg>
+    </div>
+</div>
+<script language="JavaScript">
+    var _2006_1 = [];
+    var titles = [];
+    var index = 1;
+    d3.json("../firstThreeClean.json", function(error, data) {
+        if (error) throw error;
+        for (i in data) {
+            instance = data[i];
+            if (instance["rental_year"] == "2006") {
+                if (instance["semester"] == 1) {
+                    console.log(parseFloat(instance["piece_area_cm"]/ 10000));
+                    console.log(instance["piece_title"] + " " + instance["rental_year"]);
+                    _2006_1.push({
+                        value : parseFloat(instance["piece_area_cm"]/ 1000),
+                        label : instance["piece_title"] + " : " + instance["rental_year"] + " - " + index++,
+                        valueSuffix: " cm"
+                    });
+                }
+            }
+        }
+
+        var config1 = rectangularAreaChartDefaultSettings();
+        config1.expandFromLeft = true;
+        config1.colorsScale = d3.scale.category20b();
+        config1.maxValue = 100;
+        loadRectangularAreaChart("rectangularareachart1", _2006_1, config1);
+    });
+    <!-- var data1 = [{value: "42", label: "parturient montes", valueSuffix: " things"}, -->
+    <!--     {value: "69", label: "id, mollis nec", valueSuffix: " things"}, -->
+    <!--     {value: "29", label: "lacus. Ut", valueSuffix: " things"}, -->
+    <!--     {value: "52", label: "a ultricies adipiscing", valueSuffix: " things"}]; -->
+    <!-- var config1 = rectangularAreaChartDefaultSettings(); -->
+    <!-- config1.expandFromLeft = false; -->
+    <!-- config1.colorsScale = d3.scale.category20b(); -->
+    <!-- config1.maxValue = 100; -->
+    <!-- loadRectangularAreaChart("rectangularareachart1", data1, config1); -->
+</script>
+</body>
+</html>
